@@ -10,23 +10,22 @@ class App {
             println("Kotlin-main")
             val mNullable: Meeting? = null                  // nullable (safe-call)
             val mSafe = Meeting()                           // non-nullable
-            val mNullCoalescing = mNullable ?: Meeting()    // ELVIS-operator (Coalescing)
-            val iSaveable: ISaveable = object : ISaveable {
-                override fun save() {
-                    println("ISaveable's anonymous implementation")
-                }
-            }
-            mSafe.save(iSaveable)
 
-            println("nullable meeting returns: ${closeMeeting(mNullable)}")
-            println("Null-Coalescing meeting always non-null: ${closeMeeting(mNullCoalescing)}")
-            println("null-safe instance-input returns: ${closeMeeting(mSafe)}")
+            /** safe call using let{} call
+             * only block in 'let' will be executed
+             * iff mNullable is Non-Null
+             */
+           mNullable?.let { meet ->
+               closeMeetingNonNull(meet)
+           }
+
+            closeMeetingNonNull(mSafe)
         }
 
-        private fun closeMeeting(m: Meeting?): Boolean {
+        private fun closeMeetingNonNull(m: Meeting): Boolean {
 
             /** safe-call */
-            return if (m?.canClose == false) m.close(true)
+            return if (m.canClose) m.close()
             else false
 
             /** non-null assertion, will throw exception if object is null */
@@ -39,16 +38,7 @@ class App {
 
 class Meeting {
     var canClose: Boolean = false
-    fun close(canClose: Boolean): Boolean {
+    fun close(): Boolean {
         return true
     }
-
-    /** @o is assigned null if not of type ISaveeable */
-    fun save(o: Any) {
-        val saveable: ISaveable? = o as? ISaveable    // save-cast
-
-        /** only called if 'o' is of type-ISaveable */
-        saveable?.save()
-    }
-
 }
