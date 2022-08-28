@@ -7,17 +7,10 @@ class App {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            println("Kotlin-main")
-            val mNullable: Meeting? = null                  // nullable (safe-call)
-            val mSafe = Meeting()                           // non-nullable
 
-            /** safe call using let{} call
-             * only block in 'let' will be executed
-             * iff mNullable is Non-Null
-             */
-           mNullable?.let { meet ->
-               closeMeetingNonNull(meet)
-           }
+            println("Kotlin-main")
+            val mNullable: Meeting? = null              // nullable (safe-call)
+            val mSafe = Meeting()                       // non-nullable
 
             closeMeetingNonNull(mSafe)
         }
@@ -36,9 +29,18 @@ class App {
 
 }
 
-class Meeting {
+class Meeting() {
     var canClose: Boolean = false
+    lateinit var address : Address      // ONLY to be initialized later
+
+    fun initAddress(addressIn : Address) {
+        address = addressIn              /** initialization is a-must for a property that is 'lateinit */
+    }
     fun close(): Boolean {
         return true
     }
+}
+
+class Address{
+
 }
