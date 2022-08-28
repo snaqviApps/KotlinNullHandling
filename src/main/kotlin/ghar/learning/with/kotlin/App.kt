@@ -13,7 +13,7 @@ class App {
             val mNullCoalescing = mNullable ?: Meeting()    // ELVIS-operator (Coalescing)
             val iSaveable: ISaveable = object : ISaveable {
                 override fun save() {
-                    println("ISaveable anonymous implementation")
+                    println("ISaveable's anonymous implementation")
                 }
             }
             mSafe.save(iSaveable)
